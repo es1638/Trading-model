@@ -10,17 +10,30 @@ def generate_features(df, prev_close=None):
         if prev_close is None:
             prev_close = df['Open'].iloc[0]
 
+        # Feature 1: Price change from previous close
         df['change_from_prev_close'] = (df['Close'] - prev_close) / prev_close
+
+        # Feature 2: Rolling returns
         df['return_5'] = df['Close'].pct_change(5)
         df['return_10'] = df['Close'].pct_change(10)
         df['return_15'] = df['Close'].pct_change(15)
+
+        # Feature 3: Rolling volatility
         df['volatility_10'] = df['Close'].pct_change().rolling(10).std()
         df['volatility_20'] = df['Close'].pct_change().rolling(20).std()
+
+        # Feature 4: Volume trends
         df['rolling_volume_5'] = df['Volume'].rolling(5).mean()
         df['rolling_volume_10'] = df['Volume'].rolling(10).mean()
+
+        # Feature 5: High/low % from previous close
         df['high_from_prev_close'] = (df['High'] - prev_close) / prev_close
         df['low_from_prev_close'] = (df['Low'] - prev_close) / prev_close
+
+        # Feature 6: Open-Close spread
         df['open_close_spread'] = (df['Open'] - df['Close']) / df['Open']
+
+        # Feature 7: Momentum
         df['momentum_10'] = df['Close'] / df['Close'].rolling(10).mean()
 
         df = df.dropna()
