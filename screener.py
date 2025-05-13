@@ -3,8 +3,10 @@ import pandas as pd
 from datetime import datetime, timedelta
 
 def get_tickers():
-    sp500 = pd.read_csv('sp500_tickers.csv')  # Add this file manually
-    return sp500['Symbol'].tolist()
+    url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
+    tables = pd.read_html(url)
+    tickers = tables[0]["Symbol"].tolist()
+    return tickers
 
 def screen_tickers(tickers):
     screened = []
